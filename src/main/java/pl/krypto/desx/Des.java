@@ -74,8 +74,6 @@ public class Des {
 
 
         }
-
-
         return newBlock;
     }
 
