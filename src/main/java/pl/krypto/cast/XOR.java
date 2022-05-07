@@ -1,14 +1,14 @@
 package pl.krypto.cast;
 
 public class XOR {
-
-    public static byte[] xorByteTab(byte[] first, byte[] second) {
-        byte[] result = new byte[second.length];
-
-        for (int i = 0; i < second.length; i++) {
-            result[i] = (byte) (first[i] ^ second[i]);
+    //xoruje dwie tablice bajtów
+    public static byte[] XORBytes(byte[] a, byte[] b)
+    {
+        byte[] result = new byte[a.length];
+        for (int i = 0; i < a.length; i++)
+        {
+            result[i] = (byte) (a[i] ^ b[i]);
         }
-
         return result;
     }
 }
