@@ -41,6 +41,10 @@ public class Controller {
     private ProgressBar ProgressBar;
     private double progress = 0;
 
-    
+
+    public void fileEncoding() {
+        FileEncryptionSuccessLabel.setVisible(true);
+        ProgressBar.setProgress(0.5);
+    }
 
 }
