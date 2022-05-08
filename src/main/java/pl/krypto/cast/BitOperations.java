@@ -60,5 +60,21 @@ public class BitOperations {
         return out;
     }
 
+    // wchodzi blok 48 bitowy(6 bajtów)
+    // zwraca tablicę bajtów, w której na każdej pozycji jest 6 bitów z początkowego bloku danych oraz dwa zera na końcu
+    public static  byte[] create6BitData(byte[] data)
+    {
+        int numOfBytes = (8 * data.length - 1) / 6 + 1;  //64 bity
+        byte[] out = new byte[numOfBytes];
+        for (int i = 0; i < numOfBytes; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                setBit(out, 8 * i + j, getBit(data, 6 * i + j));
+            }
+        }
+        return out;
+    }
+
 
 }

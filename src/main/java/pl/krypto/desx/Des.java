@@ -15,6 +15,8 @@ public class Des {
     private final byte[] E = {32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1};
     //32 bity  -> tablica skracająca 48 bitowy blok do bloku 32 bitowego
     private final byte[] P = {16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25};
+    //64 bity -> odwrotna tablic IP
+    private final byte[] IP1 = {40,8,48,16,56,24,64,32,39,7,47,15,55,23,63,31,38,6,46,14,54,22,62,30,37,5,45,13,53,21,61,29,36,4,44,12,52,20,60,28,35,3,43,11,51,19,59,27,34,2,42,10,50,18,58,26,33,1,41,9,49,17,57,25};
     private final byte[] sBox =
             {
                     14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7, // S1
@@ -52,13 +54,34 @@ public class Des {
             };
 
 
-    public byte[] encrypt(byte[] block, byte[] key)
+    private byte[] sBlocks(byte[] data)
+    {
+        byte row;
+        byte col;
+        data = BitOperations.create6BitData(data);
+        byte[] result = new byte[data.length / 2];  //4 bajty
+        byte lowerHalfByte = 0;
+        byte halfByte;
+        for (int b = 0; b < data.length; b++)  // b to numer sBoxa
+        {
+            row = (byte) (((data[b] >> 6) & 2) | ((data[b] >> 2) & 1));
+            col = (byte) ((data[b] >> 3) & 15);
+            halfByte = sBox[64 * b + 16 * row + col];  //z każdego sBoxa bierzemy liczbę znajdującą się w danym rzędzie i danej kolumnie
+            if (b % 2 == 0)
+                lowerHalfByte = halfByte;
+            else
+                result[b / 2] = (byte) (16 * lowerHalfByte + halfByte);
+        }
+        return result;
+    }
+
+    public byte[] crypt(byte[] block, byte[] key, boolean ifE)
     {
         //Permutowanie danych wejściowych i rozdzielenie ich na dwa bloki 32 bitowe
-        byte[] newBlock = Permutation.permutation(key, IP);
+        byte[] encryptedBlock = Permutation.permutation(block, IP);
         int halfKeySize = this.IP.length / 2;  //32 bity
-        byte[] L = BitOperations.selectBits(newBlock, 0, halfKeySize);  //pierwsza połowa permutowanego bloku
-        byte[] R = BitOperations.selectBits(newBlock, halfKeySize, halfKeySize); //druga połowa permutowanego bloku
+        byte[] L = BitOperations.selectBits(encryptedBlock, 0, halfKeySize);  //pierwsza połowa permutowanego bloku
+        byte[] R = BitOperations.selectBits(encryptedBlock, halfKeySize, halfKeySize); //druga połowa permutowanego bloku
 
         //Wygenerowanie 16 kluczy 48 bitowych
         KeysGenerator subkeysGen = new KeysGenerator(key);
@@ -66,15 +89,25 @@ public class Des {
 
         for (int k = 0; k < 16; k++)
         {
-            //Dopełniamy prawy blok do 48 bitów
-            byte[] R48 = Permutation.permutation(R, E);
-            //Wykonujemy XOR na dopełnionym prawym bloku i kluczu
-            // (pierwszy klucz to ten wygenerowny jako pierwszy, wiec znajduje się na ostatniej pozycji w tablicy)
-            R48 = XOR.XORBytes(R48, subkeys[15-k]);
-
-
+            byte[] R48 = Permutation.permutation(R, E);  //Dopełniamy prawy blok do 48 bitów
+            if (ifE == true)
+                R48 = XOR.XORBytes(R48, subkeys[k]);
+            else
+                R48 = XOR.XORBytes(R48, subkeys[15 - k]);
+            R48 = sBlocks(R48);
+            R48 = Permutation.permutation(R48, P);
+            R48 = XOR.XORBytes(L,R48);
+            L = R;
+            R = R48;
         }
-        return newBlock;
+        byte[] RL = BitOperations.joinTabBytes(R, L);
+        return Permutation.permutation(RL, IP1);
     }
+
+
+
+
+
+
 
 }
