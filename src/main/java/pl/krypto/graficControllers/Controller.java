@@ -6,8 +6,7 @@ import pl.krypto.cast.tabTransformation;
 import pl.krypto.desx.Des;
 import pl.krypto.desx.DesX;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -54,10 +53,21 @@ public class Controller {
     private double progress = 0;
     private double tmpProgress;
     Random rand = new Random();
-    private File inputFle;
+    private File inputFile;
     private File outputFile;
+    private String fileExtension;
     private DesX desXControler = new DesX();
 
+    public void getFileExtension() {
+        String extension = null;
+
+        int index = FileNameToEncrypt.getText().lastIndexOf('.');
+        if(index > 0) {
+            extension = FileNameToEncrypt.getText().substring(index + 1);
+        }
+
+        fileExtension = extension;
+    }
 
     public String randomKey () {
         String key = "";
@@ -73,34 +83,29 @@ public class Controller {
         Key3Text.setText(randomKey());
     }
 
-    public void fileEncoding() throws UnsupportedEncodingException {
+    public void fileEncoding() throws IOException {
+        byte [] fileByteArray;
+        fileByteArray = new byte[(int) inputFile.getTotalSpace()];
+        inputFile = new File(FileNameToEncrypt.getText());
+        FileInputStream fileStream = new FileInputStream(inputFile);
+        getFileExtension();
+        fileStream.read(fileByteArray);
+        for(int i =0; i < fileByteArray.length*8; i++)
+        System.out.println(BitOperations.getBit(fileByteArray,i));
         FileEncryptionSuccessLabel.setVisible(true);
-        ProgressBar.setProgress(0.5);
-        for(int i = 0; i < 8; i++){
-            System.out.println(Arrays.toString(tabTransformation.StringToByteArray(TextToEncrypt.getText())));
-        }
+    }
+
+    public void FileDecoding(){
+
     }
 
     public void textEncrypt() throws UnsupportedEncodingException {
         byte [] test = tabTransformation.StringToByteArray(TextToEncrypt.getText());
-        String str = tabTransformation.bytesToHex(test);
-        System.out.println(str);
-        test = tabTransformation.hexToBytes(str);
-        for(int i = 0; i < test.length*8;i++)
-            System.out.print(BitOperations.getBit(test,i));
-        System.out.print("\n");
-//        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
-//        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
-//        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
-//        byte [] test2 = desXControler.encodeDESX(test,key1,key2,key3,true);
-//        EncryptedText.setText(tabTransformation.bytesToHex(test2));
-//        for(int i = 0; i < test2.length*8;i++)
-//            System.out.print(BitOperations.getBit(test2,i));
-//        System.out.print("\n");
-//        test2 = desXControler.encodeDESX(test2,key3,key2,key1,false);
-//        for(int i = 0; i < test2.length*8;i++)
-//            System.out.print(BitOperations.getBit(test2,i));
-//        System.out.print("\n");
+        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
+        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
+        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
+        byte [] test2 = desXControler.DESX(test,key1,key2,key3,true);
+        EncryptedText.setText(tabTransformation.bytesToHex(test2));
     }
 
     public void textDecrypt() throws UnsupportedEncodingException {
@@ -108,9 +113,11 @@ public class Controller {
         byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
         byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
         byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
-        test2 = desXControler.encodeDESX(test2,key3,key2,key1,false);
+        test2 = desXControler.DESX(test2,key3,key2,key1,false);
         EncryptedText.setText(tabTransformation.ByteArrayToString(test2));
     }
+
+
 
 
 
