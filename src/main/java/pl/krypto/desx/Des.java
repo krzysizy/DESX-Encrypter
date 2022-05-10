@@ -75,7 +75,7 @@ public class Des {
         return result;
     }
 
-    public byte[] crypt(byte[] block, byte[] key, boolean ifE)
+    public byte[] crypt(byte[] block, byte [][] subkeys, boolean ifE)
     {
         //Permutowanie danych wejściowych i rozdzielenie ich na dwa bloki 32 bitowe
         byte[] encryptedBlock = Permutation.permutation(block, IP);
@@ -83,9 +83,6 @@ public class Des {
         byte[] L = BitOperations.selectBits(encryptedBlock, 0, halfKeySize);  //pierwsza połowa permutowanego bloku
         byte[] R = BitOperations.selectBits(encryptedBlock, halfKeySize, halfKeySize); //druga połowa permutowanego bloku
 
-        //Wygenerowanie 16 kluczy 48 bitowych
-        KeysGenerator subkeysGen = new KeysGenerator(key);
-        byte[][] subkeys = subkeysGen.getSubkeys();
 
         for (int k = 0; k < 16; k++)
         {
