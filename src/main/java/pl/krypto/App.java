@@ -24,12 +24,13 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        String stringToConvert = "F123456789ABCDEF";
-        byte [] data = tabTransformation.hexToBytes(stringToConvert);
-        for(int i = 0; i < 8; i++) {
-            System.out.println(BitOperations.getBit(data, i));
-        }
-//        byte [] patern = {14,13,10,2,3,4,5,8};
+//        String stringToConvert = "F123456789ABCDEF";
+//        byte [] data = tabTransformation.hexToBytes(stringToConvert);
+//        for(int i = 0; i < 8; i++) {
+//            System.out.println(BitOperations.getBit(data, i));
+//        }
+        byte [] tab1 = {1};
+        byte [] tab2 = {2};
 //
 //        System.out.println(Permutation.getBit(data,14));
 //        Permutation.setBit(data,13,1);

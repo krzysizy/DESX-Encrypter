@@ -1,5 +1,7 @@
 package pl.krypto.cast;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class KeysGenerator {
 
     private byte[] key;
@@ -27,7 +29,13 @@ public class KeysGenerator {
             c = BitOperations.shiftLeft(c, this.SHIFTS[k]);
             d = BitOperations.shiftLeft(d, this.SHIFTS[k]);
             byte[] cd = BitOperations.joinTabBytes(c, d);
-            subKeysLocal[k] = Permutation.permutation(cd, this.PC2);
+            try {
+                subKeysLocal[k] = Permutation.permutation(cd, this.PC2);
+            } catch (RuntimeException e)
+            {
+                System.out.println(e.getCause());
+            }
+
         }
         return subKeysLocal;
     }

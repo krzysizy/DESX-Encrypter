@@ -2,6 +2,7 @@ package pl.krypto.graficControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import pl.krypto.cast.tabTransformation;
+import pl.krypto.desx.Des;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -53,6 +54,7 @@ public class Controller {
     Random rand = new Random();
     private File inputFle;
     private File outputFile;
+    private Des desControler = new Des();
 
 
     public String randomKey () {
@@ -75,6 +77,14 @@ public class Controller {
         for(int i = 0; i < 8; i++){
             System.out.println(Arrays.toString(tabTransformation.StringToByteArray(TextToEncrypt.getText())));
         }
+    }
+
+    public void textEncrypt() throws UnsupportedEncodingException {
+        String str = "Test";
+        byte [] test = tabTransformation.StringToByteArray(str);
+        byte [] key = tabTransformation.hexToBytes(Key2Text.getText());
+        byte [] test2 = desControler.crypt(test, key, true);
+
     }
 
 
