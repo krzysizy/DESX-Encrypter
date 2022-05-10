@@ -78,10 +78,10 @@ public class tabTransformation {
     public static byte [] cutDecrypted(byte [] tmpResult)
     {
         int cnt = 0;
-        for (int i = 1; i < 9; i += 2)
+        for (int i = 1; i < 9; i += 1)
         {
-            if (tmpResult[tmpResult.length - i] == 0 && tmpResult[tmpResult.length - i - 1] == 0)
-                cnt += 2;
+            if (tmpResult[tmpResult.length - i] == 0)
+                cnt += 1;
             else
                 break;
         }
