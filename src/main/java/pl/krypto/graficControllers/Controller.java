@@ -159,6 +159,7 @@ public class Controller {
             keyToByteKey();
             byte[] test2 = desXControler.DESX(test, key1, key2, key3, true);
             EncryptedText.setText(tabTransformation.bytesToHex(test2));
+            DecryptTextButton.setDisable(false);
         }catch (Exception e){
             exceptionMessage.messsageBox(e.getMessage());
         }
@@ -173,6 +174,7 @@ public class Controller {
             keyToByteKey();
             test2 = desXControler.DESX(test2, key3, key2, key1, false);
             EncryptedText.setText(tabTransformation.ByteArrayToString(test2));
+            DecryptTextButton.setDisable(true);
         } catch (Exception e) {
             exceptionMessage.messsageBox(e.getMessage());
         }

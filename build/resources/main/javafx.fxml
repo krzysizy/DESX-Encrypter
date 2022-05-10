@@ -21,7 +21,7 @@
       <Label layoutX="370.0" layoutY="26.0" text="Klucz III" />
       <TextArea fx:id="TextToEncrypt" layoutX="9.0" layoutY="104.0" prefHeight="83.0" prefWidth="642.0" promptText="Tekst do zaszyfrowania" />
       <Label layoutX="192.0" layoutY="396.0" text="Wybierz plik do zaszyfrowania lub odszyfrowwania" />
-      <Button fx:id="DecryptTextButton" layoutX="279.0" layoutY="321.0" mnemonicParsing="false" onAction="#textDecrypt" text="Odszyfruj tekst" />
+      <Button fx:id="DecryptTextButton" disable="true" layoutX="279.0" layoutY="321.0" mnemonicParsing="false" onAction="#textDecrypt" text="Odszyfruj tekst" />
       <Button fx:id="EncryptTextButton" layoutX="281.0" layoutY="194.0" mnemonicParsing="false" onAction="#textEncrypt" text="Zaszyfruj tekst" />
       <Button fx:id="EncryptFileButton" layoutX="228.0" layoutY="461.0" mnemonicParsing="false" onAction="#fileEncoding" text="Zaszyfruj plik" />
       <Button fx:id="DecryptFileButton" layoutX="335.0" layoutY="461.0" mnemonicParsing="false" onAction="#FileDecoding" text="Odszyfruj plik" />
