@@ -1,9 +1,6 @@
 package pl.krypto.desx;
 
-import pl.krypto.cast.BitOperations;
-import pl.krypto.cast.KeysGenerator;
-import pl.krypto.cast.Permutation;
-import pl.krypto.cast.XOR;
+import pl.krypto.cast.*;
 
 public class Des {
 
@@ -103,15 +100,6 @@ public class Des {
     }
 
 
-    public byte[] codeBlock(byte[] data, int beginIndex, byte [][] subkeys, boolean ifE) throws Exception
-    {
-        byte[] msg = new byte[8];
-        System.arraycopy(data, beginIndex, msg, 0, 8);
-        return crypt(msg,subkeys, ifE);
-    }
-
-
-
     public byte[] encode(byte[] message, byte [][] subkeys)
     {
         int len;
@@ -126,7 +114,7 @@ public class Des {
             rawData = message;
             for (int i = 0; i < (rawData.length / 8); i++)
             {
-                tempBlock = codeBlock(rawData, i * 8,subkeys, true );
+                tempBlock = crypt(BitOperations.oneBlock(rawData, i * 8),subkeys, true );
                 System.arraycopy(tempBlock, 0, result, i * 8, 8);
             }
             if (message.length / 2 % 4 != 0)
@@ -138,14 +126,13 @@ public class Des {
                     else
                         tempBlock[i] = 0;
                 }
-                tempBlock = codeBlock(tempBlock, 0,subkeys, true);
+                tempBlock = crypt(BitOperations.oneBlock(tempBlock, 0),subkeys, true);
                 System.arraycopy(tempBlock, 0, result, (rawData.length / 8) * 8, 8);
             }
             return result;
         } catch (Exception ex) {};
         return null;
     }
-
 
 
     public byte[] decode(byte[] encrypted, byte [][] subkeys)
@@ -157,7 +144,7 @@ public class Des {
             rawData = encrypted;
             for (int i = 0; i < (rawData.length / 8); i++)
             {
-                tempBlock = codeBlock(rawData, i * 8,subkeys, false);
+                tempBlock = crypt(BitOperations.oneBlock(rawData, i * 8),subkeys, false);
                 System.arraycopy(tempBlock, 0, tmpResult, i * 8, tempBlock.length);
             }
             int cnt = 0;

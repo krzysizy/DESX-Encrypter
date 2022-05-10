@@ -12,13 +12,6 @@ public class XOR {
         return result;
     }
 
-    public static byte[] xorBlock(byte[] key, byte[] data, int beginIndex) throws Exception
-    {
-        byte[] msg = new byte[8];
-        System.arraycopy(data, beginIndex, msg, 0, 8);
-        msg = XORBytes(msg, key);
-        return msg;
-    }
     public static byte[] xorEncode(byte[] message, byte[] key)
     {
         //Obliczanie długości szyfrogramu
@@ -36,7 +29,7 @@ public class XOR {
             // Pętla tnąca i kodowanie bloków
             for (int i = 0; i < (rawData.length / 8); i++)
             {
-                tempBlock = xorBlock(key, rawData, i * 8);
+                tempBlock = XORBytes(BitOperations.oneBlock(rawData, i * 8),key);
                 System.arraycopy(tempBlock, 0, result, i * 8, 8);
             }
 
@@ -50,7 +43,7 @@ public class XOR {
                     else
                         tempBlock[i] = 0;
                 }
-                tempBlock = xorBlock(key, tempBlock, 0);
+                tempBlock = XORBytes(BitOperations.oneBlock(tempBlock, 0),key);
                 System.arraycopy(tempBlock, 0, result, (rawData.length / 8) * 8, 8);
             }
             return result;
@@ -68,7 +61,7 @@ public class XOR {
             //Pętla tnąca i kodowanie bloków
             for (int i = 0; i < (rawData.length / 8); i++)
             {
-                tempBlock = xorBlock(key, rawData, i * 8);
+                tempBlock = XORBytes(BitOperations.oneBlock(rawData, i * 8),key);
                 System.arraycopy(tempBlock, 0, tmpResult, i * 8, tempBlock.length);
             }
             // Usuwanie dopełnionych zer
