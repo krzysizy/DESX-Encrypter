@@ -8,7 +8,7 @@ public class DesX {
     {
     }
 
-    public byte[] encodeDESX(byte[] message, byte [] key1, byte [] key2, byte [] key3)
+    public byte[] encodeDESX(byte[] message, byte [] key1, byte [] key2, byte [] key3, boolean ifE)
     {
         Des des = new Des();
         //xorowanie z kluczem I
@@ -16,7 +16,7 @@ public class DesX {
         //szyfrowanie z kluczem II
         KeysGenerator subkeysGen = new KeysGenerator(key2);
         byte[][] subkeys = subkeysGen.getSubkeys();
-        byte[] step2= des.crypt(step1, subkeys, true);
+        byte[] step2= des.crypt(step1, subkeys, ifE);
         //xorowanie z kluczem II
         byte[] result=XOR.XORBytes(step2, key3);
         return result;

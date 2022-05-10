@@ -33,10 +33,10 @@ public class BitOperations {
     //cykliczne przesunięcie bitów w lewo o zadana ilość pozycji
     public static byte[] shiftLeft(byte[] in, int step)
     {
-        byte[] out = new byte[(in.length - 1) / 8 + 1];
-        for (int i = 0; i < in.length; i++)
+        byte[] out = new byte [in.length];
+        for (int i = 0; i < in.length * 8; i++)
         {
-            setBit(out, i, getBit(in, (i + step) % in.length));
+            setBit(out, i, getBit(in, (i + step) % (in.length * 8)));
         }
         return out;
     }
@@ -44,15 +44,15 @@ public class BitOperations {
     //łączenie dwóch ciągów bajtów w jeden
     public static byte[] joinTabBytes(byte[] a, byte[] b)
     {
-        int numOfBytes = (a.length + b.length - 1) / 8 + 1;
+        int numOfBytes = a.length + b.length;
         byte[] out = new byte[numOfBytes];
         int j = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length * 8; i++)
         {
             setBit(out, j, getBit(a, i));
             j++;
         }
-        for (int i = 0; i < b.length; i++)
+        for (int i = 0; i < b.length * 8; i++)
         {
             setBit(out, j, getBit(b, i));
             j++;

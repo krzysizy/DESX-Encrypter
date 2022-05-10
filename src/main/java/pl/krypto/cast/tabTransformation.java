@@ -1,9 +1,12 @@
 package pl.krypto.cast;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class tabTransformation {
+
+    private static Charset charset = StandardCharsets.UTF_16BE;
 
     public static String bytesToHex(byte bytes[])
     {
@@ -49,7 +52,12 @@ public class tabTransformation {
 
     public static byte [] StringToByteArray(String text) throws UnsupportedEncodingException {
         byte [] str;
-        str = text.getBytes(StandardCharsets.UTF_16BE);
+        str = text.getBytes(charset);
+        return str;
+    }
+
+    public static String ByteArrayToString(byte [] bytes) throws UnsupportedEncodingException {
+        String str = new String(bytes,charset);
         return str;
     }
 

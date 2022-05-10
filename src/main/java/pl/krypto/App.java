@@ -29,8 +29,14 @@ public class App extends Application {
 //        for(int i = 0; i < 8; i++) {
 //            System.out.println(BitOperations.getBit(data, i));
 //        }
-        byte [] tab1 = {1};
-        byte [] tab2 = {2};
+//        byte [] tab1 = {1};
+//        byte [] tab2 = {2};
+//        byte [] result;
+//        result = BitOperations.joinTabBytes(tab1,tab2);
+//        result = BitOperations.shiftLeft(result,1);
+//        for(int i = 0; i < 16; i++) {
+//            System.out.print(BitOperations.getBit(result, i));
+//        }
 //
 //        System.out.println(Permutation.getBit(data,14));
 //        Permutation.setBit(data,13,1);

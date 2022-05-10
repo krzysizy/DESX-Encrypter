@@ -1,8 +1,10 @@
 package pl.krypto.graficControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import pl.krypto.cast.BitOperations;
 import pl.krypto.cast.tabTransformation;
 import pl.krypto.desx.Des;
+import pl.krypto.desx.DesX;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -54,7 +56,7 @@ public class Controller {
     Random rand = new Random();
     private File inputFle;
     private File outputFile;
-    private Des desControler = new Des();
+    private DesX desXControler = new DesX();
 
 
     public String randomKey () {
@@ -80,11 +82,34 @@ public class Controller {
     }
 
     public void textEncrypt() throws UnsupportedEncodingException {
-        String str = "Test";
-        byte [] test = tabTransformation.StringToByteArray(str);
-        byte [] key = tabTransformation.hexToBytes(Key2Text.getText());
-        byte [] test2 = desControler.crypt(test, key, true);
+        byte [] test = tabTransformation.StringToByteArray(TextToEncrypt.getText());
+        String str = tabTransformation.bytesToHex(test);
+        System.out.println(str);
+        test = tabTransformation.hexToBytes(str);
+        for(int i = 0; i < test.length*8;i++)
+            System.out.print(BitOperations.getBit(test,i));
+        System.out.print("\n");
+//        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
+//        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
+//        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
+//        byte [] test2 = desXControler.encodeDESX(test,key1,key2,key3,true);
+//        EncryptedText.setText(tabTransformation.bytesToHex(test2));
+//        for(int i = 0; i < test2.length*8;i++)
+//            System.out.print(BitOperations.getBit(test2,i));
+//        System.out.print("\n");
+//        test2 = desXControler.encodeDESX(test2,key3,key2,key1,false);
+//        for(int i = 0; i < test2.length*8;i++)
+//            System.out.print(BitOperations.getBit(test2,i));
+//        System.out.print("\n");
+    }
 
+    public void textDecrypt() throws UnsupportedEncodingException {
+        byte [] test2 = tabTransformation.hexToBytes(EncryptedText.getText());
+        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
+        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
+        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
+        test2 = desXControler.encodeDESX(test2,key3,key2,key1,false);
+        EncryptedText.setText(tabTransformation.ByteArrayToString(test2));
     }
 
 
