@@ -20,7 +20,7 @@ public class DesX {
             //xorowanie z kluczem I
             step1 = XOR.xorEncode(message, key1);
             //szyfrowanie z kluczem II
-            step2 = des.encode(step1, subkeys);
+            step2 = des.desEncode(step1, subkeys);
             //xorowanie z kluczem II
             result = XOR.xorEncode(step2, key3);
         }
@@ -28,8 +28,8 @@ public class DesX {
        {
            //xorowanie z kluczem I
             step1 = XOR.xorDecode(message, key1);
-            //szyfrowanie z kluczem II
-            step2 = des.decode(step1, subkeys);
+            //deszyfrowanie z kluczem II
+            step2 = des.desDecode(step1, subkeys);
             //xorowanie z kluczem II
             result = XOR.xorDecode(step2, key3);
         }

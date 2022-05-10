@@ -62,6 +62,34 @@ public class tabTransformation {
         return str;
     }
 
+    public static byte [] fillMessage(byte [] message)
+    {
+        //Obliczanie długości szyfrogramu
+        int len;
+        if (message.length % 8 != 0)
+            len = (message.length / 8 + 1) * 8;
+        else
+            len = message.length;
+        byte[] result = new byte[len];
+        System.arraycopy(message, 0, result, 0, message.length);
+        return result;
+    }
+
+    public static byte [] cutDecrypted(byte [] tmpResult)
+    {
+        int cnt = 0;
+        for (int i = 1; i < 9; i += 2)
+        {
+            if (tmpResult[tmpResult.length - i] == 0 && tmpResult[tmpResult.length - i - 1] == 0)
+                cnt += 2;
+            else
+                break;
+        }
+        byte[] result = new byte[tmpResult.length - cnt];
+        System.arraycopy(tmpResult, 0, result, 0, tmpResult.length - cnt);
+        return result;
+    }
+
 
 
 }
