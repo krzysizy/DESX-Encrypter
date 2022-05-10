@@ -16,39 +16,21 @@ public class XOR {
     {
         //Obliczanie długości szyfrogramu
         int len;
-        if ((message.length / 2 % 4) != 0)
+        if (message.length % 8 != 0)
             len = (message.length / 8 + 1) * 8;
         else
             len = message.length;
 
         byte[] result = new byte[len];
-        byte[] tempBlock = new byte[8];
-        byte[] rawData = null;
-        try {
-            rawData = message;
-            // Pętla tnąca i kodowanie bloków
-            for (int i = 0; i < (rawData.length / 8); i++)
-            {
-                tempBlock = XORBytes(BitOperations.oneBlock(rawData, i * 8),key);
-                System.arraycopy(tempBlock, 0, result, i * 8, 8);
-            }
-
-            // Dopełnianie zerami i kodowanie ostatniego bloku
-            if (message.length / 2 % 4 != 0)
-            {
-                for (int i = 0; i < 8; i++)
-                {
-                    if (i + (rawData.length / 8) * 8 < rawData.length)
-                        tempBlock[i] = rawData[i + (rawData.length / 8) * 8];
-                    else
-                        tempBlock[i] = 0;
-                }
-                tempBlock = XORBytes(BitOperations.oneBlock(tempBlock, 0),key);
-                System.arraycopy(tempBlock, 0, result, (rawData.length / 8) * 8, 8);
-            }
-            return result;
-        } catch (Exception ex) {};
-        return null;
+        byte[] tempBlock;
+        System.arraycopy(message, 0, result, 0, message.length);
+        // Pętla tnąca i kodowanie bloków
+        for (int i = 0; i < (result.length / 8); i++)
+        {
+            tempBlock = XORBytes(BitOperations.oneBlock(result, i * 8),key);
+            System.arraycopy(tempBlock, 0, result, i * 8, 8);
+        }
+        return result;
     }
 
     public static byte[] xorDecode(byte[] encrypted, byte[] key)

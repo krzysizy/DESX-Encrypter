@@ -77,7 +77,7 @@ public class BitOperations {
     }
 
     //dzielenie na bloki 64 bitowe
-    public static byte[] oneBlock(byte[] data, int beginIndex) throws Exception
+    public static byte[] oneBlock(byte[] data, int beginIndex)
     {
         byte[] msg = new byte[8];
         System.arraycopy(data, beginIndex, msg, 0, 8);
