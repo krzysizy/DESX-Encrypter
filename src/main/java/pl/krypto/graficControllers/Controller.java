@@ -1,6 +1,8 @@
 package pl.krypto.graficControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import pl.krypto.cast.BitOperations;
 import pl.krypto.cast.tabTransformation;
 import pl.krypto.desx.Des;
@@ -59,6 +61,15 @@ public class Controller {
     private byte [] key1;
     private byte [] key2;
     private byte [] key3;
+    private Stage stage;
+
+    public void openFile() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Wybierz plik do zaszyfrowania");
+
+        inputFile = fileChooser.showOpenDialog(stage);
+    }
 
     public void keyToByteKey  (){
         key1 = tabTransformation.hexToBytes(Key1Text.getText());
@@ -68,9 +79,9 @@ public class Controller {
     public void getFileExtension() {
         String extension = null;
 
-        int index = FileNameToEncrypt.getText().lastIndexOf('.');
+        int index = inputFile.getName().lastIndexOf('.');
         if(index > 0) {
-            extension = FileNameToEncrypt.getText().substring(index + 1);
+            extension = inputFile.getName().substring(index + 1);
         }
 
         fileExtension = extension;
@@ -92,7 +103,7 @@ public class Controller {
 
     public void fileEncoding() throws IOException {
         byte [] fileByteArray;
-        inputFile = new File(FileNameToEncrypt.getText());
+
         fileByteArray = new byte[(int)inputFile.length()];
         FileInputStream fileStream = new FileInputStream(inputFile);
         getFileExtension();

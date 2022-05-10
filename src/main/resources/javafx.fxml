@@ -21,7 +21,6 @@
       <Label layoutX="98.0" layoutY="26.0" text="Klucz I" />
       <Label layoutX="370.0" layoutY="26.0" text="Klucz III" />
       <TextArea fx:id="TextToEncrypt" layoutX="9.0" layoutY="104.0" prefHeight="57.0" prefWidth="642.0" promptText="Tekst do zaszyfrowania" />
-      <TextField fx:id="FileNameToEncrypt" layoutX="252.0" layoutY="364.0" />
       <Label layoutX="247.0" layoutY="347.0" text="Nazwa pliku do zaszyfrowania" />
       <Button fx:id="DecryptTextButton" layoutX="278.0" layoutY="285.0" mnemonicParsing="false" onAction="#textDecrypt" text="Odszyfruj tekst" />
       <Button fx:id="EncryptTextButton" layoutX="279.0" layoutY="171.0" mnemonicParsing="false" onAction="#textEncrypt" text="Zaszyfruj tekst" />
@@ -32,5 +31,6 @@
       <Label fx:id="FileEncryptionSuccessLabel" layoutX="215.0" layoutY="471.0" text="Zaszyfrowano do pliku Zaszyfrowane" visible="false" />
       <TextArea fx:id="EncryptedText" editable="false" layoutX="9.0" layoutY="216.0" prefHeight="57.0" prefWidth="642.0" promptText="Zaszyfrowany tekst" />
       <Button fx:id="ExampleKeyButton" layoutX="493.0" layoutY="33.0" mnemonicParsing="false" onAction="#loadExampleKey" prefHeight="46.0" prefWidth="95.0" text="Generuj losowy klucz" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="285.0" layoutY="373.0" mnemonicParsing="false" onAction="#openFile" text="Wybierz plik" />
    </children>
 </AnchorPane>
