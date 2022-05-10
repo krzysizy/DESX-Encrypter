@@ -75,6 +75,7 @@ public class Des {
         return result;
     }
 
+    //szyfrowanie bloku 64 bitowego
     public byte[] crypt(byte[] block, byte [][] subkeys, boolean ifE)
     {
         //Permutowanie danych wejściowych i rozdzielenie ich na dwa bloki 32 bitowe
@@ -100,6 +101,81 @@ public class Des {
         byte[] RL = BitOperations.joinTabBytes(R, L);
         return Permutation.permutation(RL, IP1);
     }
+
+
+    public byte[] codeBlock(byte[] data, int beginIndex, byte [][] subkeys, boolean ifE) throws Exception
+    {
+        byte[] msg = new byte[8];
+        System.arraycopy(data, beginIndex, msg, 0, 8);
+        return crypt(msg,subkeys, ifE);
+    }
+
+
+
+    public byte[] encode(byte[] message, byte [][] subkeys)
+    {
+        int len;
+        if ((message.length / 2 % 4) != 0)
+            len = (message.length / 8 + 1) * 8;
+        else
+            len = message.length;
+        byte[] result = new byte[len];
+        byte[] tempBlock = new byte[8];
+        byte[] rawData = null;
+        try {
+            rawData = message;
+            for (int i = 0; i < (rawData.length / 8); i++)
+            {
+                tempBlock = codeBlock(rawData, i * 8,subkeys, true );
+                System.arraycopy(tempBlock, 0, result, i * 8, 8);
+            }
+            if (message.length / 2 % 4 != 0)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    if (i + (rawData.length / 8) * 8 < rawData.length)
+                        tempBlock[i] = rawData[i + (rawData.length / 8) * 8];
+                    else
+                        tempBlock[i] = 0;
+                }
+                tempBlock = codeBlock(tempBlock, 0,subkeys, true);
+                System.arraycopy(tempBlock, 0, result, (rawData.length / 8) * 8, 8);
+            }
+            return result;
+        } catch (Exception ex) {};
+        return null;
+    }
+
+
+
+    public byte[] decode(byte[] encrypted, byte [][] subkeys)
+    {
+        byte[] tmpResult = new byte[encrypted.length];
+        byte[] tempBlock = new byte[8];
+        byte[] rawData = null;
+        try {
+            rawData = encrypted;
+            for (int i = 0; i < (rawData.length / 8); i++)
+            {
+                tempBlock = codeBlock(rawData, i * 8,subkeys, false);
+                System.arraycopy(tempBlock, 0, tmpResult, i * 8, tempBlock.length);
+            }
+            int cnt = 0;
+            for (int i = 1; i < 9; i += 2)
+            {
+                if (tmpResult[tmpResult.length - i] == 0 && tmpResult[tmpResult.length - i - 1] == 0)
+                    cnt += 2;
+                else
+                    break;
+            }
+            byte[] result = new byte[tmpResult.length - cnt];
+            System.arraycopy(tmpResult, 0, result, 0, tmpResult.length - cnt);
+            return result;
+        } catch (Exception ex) { };
+        return null;
+    }
+
+
 
 
 
