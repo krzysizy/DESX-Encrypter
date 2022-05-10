@@ -5,7 +5,6 @@ import pl.krypto.cast.BitOperations;
 import pl.krypto.cast.tabTransformation;
 import pl.krypto.desx.Des;
 import pl.krypto.desx.DesX;
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -57,7 +56,15 @@ public class Controller {
     private File outputFile;
     private String fileExtension;
     private DesX desXControler = new DesX();
+    private byte [] key1;
+    private byte [] key2;
+    private byte [] key3;
 
+    public void keyToByteKey  (){
+        key1 = tabTransformation.hexToBytes(Key1Text.getText());
+        key2 = tabTransformation.hexToBytes(Key2Text.getText());
+        key3 = tabTransformation.hexToBytes(Key3Text.getText());
+    }
     public void getFileExtension() {
         String extension = null;
 
@@ -85,40 +92,50 @@ public class Controller {
 
     public void fileEncoding() throws IOException {
         byte [] fileByteArray;
-        fileByteArray = new byte[(int) inputFile.getTotalSpace()];
         inputFile = new File(FileNameToEncrypt.getText());
+        fileByteArray = new byte[(int)inputFile.length()];
         FileInputStream fileStream = new FileInputStream(inputFile);
         getFileExtension();
         fileStream.read(fileByteArray);
-        for(int i =0; i < fileByteArray.length*8; i++)
-        System.out.println(BitOperations.getBit(fileByteArray,i));
+        keyToByteKey();
+        fileByteArray = desXControler.DESX(fileByteArray,key1,key2,key3,true);
+        outputFile = new File("Zaszyfrowane." + fileExtension);
+        FileOutputStream fileOutStream = new FileOutputStream(outputFile);
+        fileOutStream.write(fileByteArray);
+        FileEncryptionSuccessLabel.setText("Zaszyfrowano pomyslnie do pliku: " + outputFile.getName());
         FileEncryptionSuccessLabel.setVisible(true);
     }
 
-    public void FileDecoding(){
-
+    public void FileDecoding() throws IOException {
+        byte [] fileByteArray;
+        inputFile = new File("Zaszyfrowane." + fileExtension);
+        fileByteArray = new byte[(int)inputFile.length()];
+        FileInputStream fileStream = new FileInputStream(inputFile);
+        getFileExtension();
+        fileStream.read(fileByteArray);
+        keyToByteKey();
+        fileByteArray = desXControler.DESX(fileByteArray,key3,key2,key1,false);
+        outputFile = new File("Odszyfrowane." + fileExtension);
+        FileOutputStream fileOutStream = new FileOutputStream(outputFile);
+        fileOutStream.write(fileByteArray);
+        FileEncryptionSuccessLabel.setText("Odszyfrowano pomyslnie do pliku: " + outputFile.getName());
     }
 
     public void textEncrypt() throws UnsupportedEncodingException {
         byte [] test = tabTransformation.StringToByteArray(TextToEncrypt.getText());
-        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
-        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
-        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
+        keyToByteKey();
         byte [] test2 = desXControler.DESX(test,key1,key2,key3,true);
         EncryptedText.setText(tabTransformation.bytesToHex(test2));
     }
 
     public void textDecrypt() throws UnsupportedEncodingException {
         byte [] test2 = tabTransformation.hexToBytes(EncryptedText.getText());
-        byte [] key1 = tabTransformation.hexToBytes(Key1Text.getText());
-        byte [] key2 = tabTransformation.hexToBytes(Key2Text.getText());
-        byte [] key3 = tabTransformation.hexToBytes(Key3Text.getText());
+        keyToByteKey();
         test2 = desXControler.DESX(test2,key3,key2,key1,false);
         EncryptedText.setText(tabTransformation.ByteArrayToString(test2));
     }
 
+    public static void fillProgressBar() {
 
-
-
-
+    }
 }
