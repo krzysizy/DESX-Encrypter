@@ -28,6 +28,8 @@
       <Label fx:id="FileEncryptionSuccessLabel" alignment="CENTER" layoutX="233.0" layoutY="503.0" text="Zaszyfrowano do pliku Zaszyfrowane" visible="false" />
       <TextArea fx:id="EncryptedText" editable="false" layoutX="9.0" layoutY="229.0" prefHeight="83.0" prefWidth="642.0" promptText="Zaszyfrowany tekst" />
       <Button fx:id="ExampleKeyButton" layoutX="493.0" layoutY="33.0" mnemonicParsing="false" onAction="#loadExampleKey" prefHeight="46.0" prefWidth="95.0" text="Generuj losowy klucz" textAlignment="CENTER" wrapText="true" />
-      <Button layoutX="285.0" layoutY="421.0" mnemonicParsing="false" onAction="#openFile" text="Wybierz plik" />
+      <Button layoutX="231.0" layoutY="421.0" mnemonicParsing="false" onAction="#openFile" text="Wybierz plik" />
+      <Label layoutX="335.0" layoutY="425.0" prefHeight="17.0" prefWidth="81.0" text="Wybrany plik:" />
+      <TextField fx:id="choosenFile" editable="false" layoutX="411.0" layoutY="421.0" />
    </children>
 </AnchorPane>

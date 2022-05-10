@@ -24,6 +24,9 @@ public class Controller {
     private TextField Key3Text;
 
     @FXML
+    private TextField choosenFile;
+
+    @FXML
     private TextArea TextToEncrypt;
 
     @FXML
@@ -68,6 +71,7 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Wybierz plik do zaszyfrowania");
         inputFile = fileChooser.showOpenDialog(stage);
+        choosenFile.setText(inputFile.getName());
         if(inputFile == null){
             throw new Exception("Nie wybrano pliku lub plik nie otworzyl sie poprawnie.");
         }
