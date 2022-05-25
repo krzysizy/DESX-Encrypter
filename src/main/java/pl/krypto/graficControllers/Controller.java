@@ -78,12 +78,12 @@ public class Controller {
     }
 
     public void keyToByteKey  () throws Exception {
-        if(Key1Text.getText().length() != 16 && Key1Text.getText().length() != 16 && Key1Text.getText().length() != 16) {
-            throw new Exception("Wpisane klucze sa niepoprawne. Klucz musi sie skladac z 16 znakow z zakresu 0-9 i A-F");
+        if(Key1Text.getText().length() != 16 || Key2Text.getText().length() != 16 || Key3Text.getText().length() != 16) {
+            throw new Exception("Wpisane klucze sa niepoprawne. Klucz musi sie skladac z 16 znakow.");
         }
         for(int i = 0; i<16;i++) {
             if (!(hexTableString.contains(String.valueOf(Key1Text.getText().charAt(i)).toUpperCase()) && hexTableString.contains(String.valueOf(Key2Text.getText().charAt(i)).toUpperCase()) && hexTableString.contains(String.valueOf(Key3Text.getText().charAt(i)).toUpperCase()))) {
-                throw new Exception("Wpisane klucze sa niepoprawne. Klucz musi sie skladac z 16 znakow z zakresu 0-9 i A-F");
+                throw new Exception("Wpisane klucze sa niepoprawne. Wpisz wszystkie znaki w kluczu z zakresu 0-9 i A-F");
             }
         }
         key1 = tabTransformation.hexToBytes(Key1Text.getText());
@@ -126,7 +126,10 @@ public class Controller {
             fileStream.read(fileByteArray);
             keyToByteKey();
             fileByteArray = desXControler.DESX(fileByteArray, key1, key2, key3, true);
-            outputFile = new File("Zaszyfrowane." + fileExtension);
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Zapisz plik");
+            outputFile = fileChooser.showSaveDialog(stage);
+            outputFile = new File( outputFile.getName() + "." + fileExtension);
             FileOutputStream fileOutStream = new FileOutputStream(outputFile);
             fileOutStream.write(fileByteArray);
             FileEncryptionSuccessLabel.setText("Zaszyfrowano pomyslnie do pliku: " + outputFile.getName());
@@ -134,6 +137,7 @@ public class Controller {
         }catch (Exception e) {
             exceptionMessage.messsageBox(e.getMessage());
         }
+
     }
 
     public void FileDecoding()  {
@@ -142,13 +146,19 @@ public class Controller {
             if(inputFile == null){
                 throw new Exception("Nie wybrano pliku lub plik nie otworzyl sie poprawnie.");
             }
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wybierz plik do zaszyfrowania");
+            inputFile = fileChooser.showOpenDialog(stage);
+            choosenFile.setText(inputFile.getName());
             fileByteArray = new byte[(int) inputFile.length()];
             FileInputStream fileStream = new FileInputStream(inputFile);
             getFileExtension();
             fileStream.read(fileByteArray);
             keyToByteKey();
             fileByteArray = desXControler.DESX(fileByteArray, key3, key2, key1, false);
-            outputFile = new File("Odszyfrowane." + fileExtension);
+            fileChooser.setTitle("Zapisz plik");
+            outputFile = fileChooser.showSaveDialog(stage);
+            outputFile = new File( outputFile.getName() + "." + fileExtension);
             FileOutputStream fileOutStream = new FileOutputStream(outputFile);
             fileOutStream.write(fileByteArray);
             FileEncryptionSuccessLabel.setText("Odszyfrowano pomyslnie do pliku: " + outputFile.getName());
