@@ -1,5 +1,5 @@
-# DESX encryption program
-DESX encryption is a project for cryptography course at Technical University of Lodz. Project was about made an application to encrypt and decrypt files and text using DESX algorithm. Application has simple user interface. We implemented the whole algorithm on bitwise operations.
+# DESX encrypter
+DESX encrypter is a project for cryptography course at Technical University of Lodz. Project was about made an application to encrypt and decrypt files and text using DESX algorithm. Application has simple user interface. We implemented the whole algorithm on bitwise operations.
 ## Applications gives folliwing options:
 - Generate radomly 3 uniqe 16-character keys
 - Space to enter the text to be encrypted
